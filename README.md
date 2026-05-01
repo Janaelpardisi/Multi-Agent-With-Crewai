@@ -1,18 +1,101 @@
-# Multi Agent With Crewai Framework
+<div align="center">
 
-An AI-powered multi-agent system that analyzes companies, identifies skill gaps, and recommends personalized training courses. Built with **CrewAI**, **FastAPI**, and powered by **OpenAI GPT-4**.
+# 🤖 Multi-Agent-With-Crewai
+
+### AI-Powered Corporate Training Analysis Platform
+
+**An intelligent multi-agent system that analyzes companies, identifies skill gaps, and recommends personalized training courses using advanced AI.**
+
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776ab?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![CrewAI](https://img.shields.io/badge/CrewAI-1.14%2B-FF6B35?logoColor=white)](https://docs.crewai.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/Janaelpardisi/Multi-Agent-With-Crewai?style=social)](https://github.com/Janaelpardisi/Multi-Agent-With-Crewai)
+
+[Features](#-features) • [Quick Start](#-quick-start) • [API Docs](#-api-documentation) • [How It Works](#-how-it-works) • [Contributing](#-contributing)
+
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [Overview](#-overview)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Quick Start](#-quick-start)
+- [API Documentation](#-api-documentation)
+- [Project Structure](#-project-structure)
+- [How It Works](#-how-it-works)
+- [Configuration](#-configuration--customization)
+- [Troubleshooting](#-troubleshooting)
+- [Examples](#-examples)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+---
+
+## 🎯 Overview
+
+**Multi-Agent-With-Crewai** is an enterprise-grade AI system that leverages multiple specialized AI agents to perform comprehensive company analysis and training recommendations. 
+
+It uses **CrewAI's multi-agent orchestration** to:
+- 🔍 Analyze company job requirements
+- 📊 Identify critical skill gaps
+- 🎓 Find the best training courses
+- 📄 Generate professional reports
+
+Perfect for **HR teams, talent development departments**, and **corporate training managers** who need data-driven insights for employee development.
 
 ---
 
 ## 🌟 Features
 
-- **Company Analysis Agent** — Extracts job requirements and skills from company job postings via LinkedIn and job boards
-- **Skills Gap Detector** — Identifies the most critical skill gaps based on market demand and business impact
-- **Course Finder Agent** — Discovers and ranks the best training courses from Coursera and Udemy
-- **Training Report Generator** — Creates professional HTML reports with actionable training recommendations
-- **Real-time Progress Tracking** — Stream live updates as agents complete their analysis
-- **RESTful API** — Simple, fast API endpoints for seamless integration
-- **Modern UI** — Responsive web interface with real-time job status monitoring
+### 🏢 **Company Analysis Agent**
+- Searches LinkedIn and job boards for company postings
+- Extracts detailed job requirements and responsibilities
+- Identifies required skills (technical & soft skills)
+- Provides company industry context and summary
+
+### 🔎 **Skills Gap Detector Agent**
+- Analyzes extracted skills from job postings
+- Prioritizes skills by importance and frequency
+- Evaluates market demand and business impact
+- Generates intelligent search queries for course discovery
+
+### 📚 **Course Finder Agent**
+- Searches Coursera and Udemy platforms
+- AI-powered web scraping with ratings and reviews
+- Ranks courses by relevance, price, and quality
+- Filters by industry-specific relevance
+
+### 📊 **Training Report Author Agent**
+- Compiles all findings into structured data
+- Generates professional HTML reports
+- Creates actionable training recommendations
+- Produces executive-ready documentation
+
+### ⚡ **Additional Capabilities**
+- **Real-time Progress Tracking** — Live streaming updates as agents work
+- **RESTful API** — Clean, intuitive endpoints
+- **Responsive UI** — Modern web interface
+- **JSON Output** — Machine-readable results
+- **Async Processing** — Non-blocking analysis jobs
+
+---
+
+## 🛠️ Tech Stack
+
+| Component | Technology | Purpose |
+|-----------|-----------|---------|
+| **Multi-Agent Framework** | CrewAI | Orchestrate and coordinate AI agents |
+| **Web Framework** | FastAPI | High-performance REST API |
+| **LLM** | OpenAI GPT-4 | Agent reasoning & analysis |
+| **Web Search** | Tavily API | Real-time job market data |
+| **Web Scraping** | ScrapeGraphAI | Intelligent course extraction |
+| **Data Validation** | Pydantic | Structured output validation |
+| **Web Server** | Uvicorn | ASGI server |
+| **Frontend** | HTML5/CSS3/JS | Interactive user interface |
 
 ---
 
@@ -20,220 +103,322 @@ An AI-powered multi-agent system that analyzes companies, identifies skill gaps,
 
 ### Prerequisites
 
-- Python 3.10 or higher
-- API Keys:
-  - `OPENAI_API_KEY` — From OpenAI
-  - `TAVILY_API_KEY` — For web search capabilities
-  - `SGAI_API_KEY` — For web scraping (ScrapeGraphAI)
-  - `AGENTOPS_API_KEY` — Optional, for agent monitoring
+Before you begin, ensure you have:
 
-### Installation
+- **Python 3.10** or higher
+- **pip** package manager
+- API Keys from:
+  - 🔑 [OpenAI](https://platform.openai.com/) — `OPENAI_API_KEY`
+  - 🔑 [Tavily](https://tavily.com/) — `TAVILY_API_KEY`
+  - 🔑 [ScrapeGraphAI](https://scrape-graph-ai.com/) — `SGAI_API_KEY`
+  - 🔑 [AgentOps](https://agentops.ai/) — `AGENTOPS_API_KEY` (optional)
 
-1. **Clone or navigate to the project directory**
+### Installation Steps
+
+#### 1️⃣ Clone the Repository
 
 ```bash
-cd "Multi Agent With Crewai Framework"
+git clone https://github.com/Janaelpardisi/Multi-Agent-With-Crewai.git
+cd Multi-Agent-With-Crewai
 ```
 
-2. **Create a virtual environment** (recommended)
+#### 2️⃣ Create Virtual Environment
 
 ```bash
+# Windows
 python -m venv venv
-venv\Scripts\activate  # On Windows
-# source venv/bin/activate  # On macOS/Linux
+venv\Scripts\activate
+
+# macOS/Linux
+python3 -m venv venv
+source venv/bin/activate
 ```
 
-3. **Install dependencies**
+#### 3️⃣ Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **Configure environment variables**
+#### 4️⃣ Configure Environment Variables
 
 Create a `.env` file in the project root:
 
 ```env
-OPENAI_API_KEY=your_openai_api_key
-TAVILY_API_KEY=your_tavily_api_key
-SGAI_API_KEY=your_scrapegraphai_api_key
-AGENTOPS_API_KEY=your_agentops_api_key
+# OpenAI Configuration
+OPENAI_API_KEY=sk-your_openai_api_key_here
+
+# Tavily Search API
+TAVILY_API_KEY=your_tavily_api_key_here
+
+# ScrapeGraphAI
+SGAI_API_KEY=your_scrapegraphai_api_key_here
+
+# AgentOps (Optional - for agent monitoring)
+AGENTOPS_API_KEY=your_agentops_api_key_here
 ```
 
-### Running the Application
+#### 5️⃣ Run the Application
 
-**Using the batch file (Windows):**
-
+**Option A: Using Batch File (Windows)**
 ```bash
 run.bat
 ```
 
-**Or manually with Python:**
-
+**Option B: Using Python**
 ```bash
 python main.py
 ```
 
-The server will start at `http://localhost:8000`
+**Option C: Using Uvicorn Directly**
+```bash
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+✅ The server will be available at: **http://localhost:8000**
 
 ---
 
 ## 📋 API Documentation
 
-### Endpoint: `/api/analyze`
+### Base URL
+```
+http://localhost:8000
+```
 
-**Method:** `POST`
+### Endpoints Overview
 
-**Description:** Submits a company for skill gap analysis
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/analyze` | Start company analysis |
+| `GET` | `/api/analyze/{job_id}` | Get job status & results |
+| `GET` | `/api/analyze/stream/{job_id}` | Stream live updates |
+| `GET` | `/` | Access web UI |
 
-**Request Body:**
+---
 
+### 1. POST `/api/analyze` — Start Analysis
+
+**Submit a company for analysis**
+
+**Request:**
+```bash
+curl -X POST http://localhost:8000/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_name": "TechCorp Inc",
+    "industry": "Software Development",
+    "min_job_posts": 2,
+    "top_skills_no": 5,
+    "top_courses_no": 3,
+    "top_platforms_no": 2
+  }'
+```
+
+**Request Body Schema:**
 ```json
 {
-  "company_name": "TechCorp Inc",
-  "industry": "Software Development",
-  "min_job_posts": 1,
-  "top_skills_no": 2,
-  "top_courses_no": 2,
-  "top_platforms_no": 2
+  "company_name": "string (required)",
+  "industry": "string (required)",
+  "min_job_posts": "integer (default: 1)",
+  "top_skills_no": "integer (default: 2)",
+  "top_courses_no": "integer (default: 2)",
+  "top_platforms_no": "integer (default: 2)"
 }
 ```
 
-**Parameters:**
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `company_name` | string | *required* | Name of the company to analyze |
-| `industry` | string | *required* | Industry/sector (e.g., "Tech", "Finance") |
-| `min_job_posts` | integer | 1 | Number of job posts to analyze |
-| `top_skills_no` | integer | 2 | Number of top skills to identify |
-| `top_courses_no` | integer | 2 | Number of courses per skill |
-| `top_platforms_no` | integer | 2 | Number of platforms to search |
-
-**Response:**
-
+**Response (201 Created):**
 ```json
 {
   "job_id": "484dc247-6b92-4eb6-b048-7bfd105de696",
-  "status": "success",
-  "message": "Analysis completed successfully"
+  "status": "running",
+  "message": "Analysis started. Check /api/analyze/{job_id} for status"
 }
 ```
 
-### Endpoint: `/api/analyze/{job_id}`
+---
 
-**Method:** `GET`
+### 2. GET `/api/analyze/{job_id}` — Get Status & Results
 
-**Description:** Retrieves the status and results of an analysis job
+**Retrieve analysis results**
 
-**Response:**
+**Request:**
+```bash
+curl http://localhost:8000/api/analyze/484dc247-6b92-4eb6-b048-7bfd105de696
+```
 
+**Response (200 OK):**
 ```json
 {
+  "job_id": "484dc247-6b92-4eb6-b048-7bfd105de696",
   "status": "completed",
   "progress": 100,
+  "message": "Analysis completed successfully",
   "results": {
-    "company_analysis": {...},
-    "skills_gap": {...},
-    "courses": {...},
-    "report_url": "/outputs/{job_id}/report.html"
+    "company_analysis": {
+      "company_name": "TechCorp Inc",
+      "industry": "Software Development",
+      "company_summary": "TechCorp is a leading software company...",
+      "job_posts": [
+        {
+          "job_title": "Senior Full Stack Engineer",
+          "required_skills": ["Python", "React", "PostgreSQL"],
+          "experience_level": "Senior",
+          "source_url": "https://linkedin.com/..."
+        }
+      ],
+      "top_required_skills": ["Python", "React", "PostgreSQL"]
+    },
+    "skills_gap": {
+      "total_skills_found": 15,
+      "priority_skills_for_training": [
+        {
+          "skill_name": "Python",
+          "importance_level": "High",
+          "reason": "Required in 80% of job postings",
+          "suggested_search_queries": ["Advanced Python Development"]
+        }
+      ]
+    },
+    "courses": {
+      "total_courses_found": 12,
+      "courses": [
+        {
+          "skill_name": "Python",
+          "course_title": "Complete Python Bootcamp",
+          "platform": "Udemy",
+          "course_url": "https://udemy.com/...",
+          "price": "$15.99",
+          "duration": "25 hours",
+          "rating": 4.8,
+          "level": "Intermediate"
+        }
+      ]
+    },
+    "report_url": "/outputs/484dc247-6b92-4eb6-b048-7bfd105de696/step_4_report.html"
   }
 }
 ```
 
-### Endpoint: `/api/analyze/stream/{job_id}`
+**Status Values:**
+- `running` — Analysis in progress
+- `completed` — Analysis finished successfully
+- `failed` — Analysis encountered an error
 
-**Method:** `GET`
+---
 
-**Description:** Server-sent events stream for real-time progress updates
+### 3. GET `/api/analyze/stream/{job_id}` — Stream Live Updates
 
-**Response:** Stream of live updates as agents complete tasks
+**Get real-time progress updates**
+
+**Request:**
+```bash
+curl http://localhost:8000/api/analyze/stream/484dc247-6b92-4eb6-b048-7bfd105de696
+```
+
+**Response (Server-Sent Events):**
+```
+data: {"type":"message","content":"Analyzing company...","agent":"Company Analyzer Agent"}
+data: {"type":"progress","value":25}
+data: {"type":"message","content":"Identifying skill gaps...","agent":"Skills Gap Detector"}
+data: {"type":"progress","value":50}
+...
+```
 
 ---
 
 ## 📁 Project Structure
 
 ```
-Multi Agent With Crewai Framework/
-├── main.py                 # FastAPI application & API endpoints
-├── crew_logic.py           # CrewAI agents and task definitions
-├── requirements.txt        # Python dependencies
-├── run.bat                 # Batch file to start the server
-├── .env                    # Environment variables (create this)
-├── static/
-│   └── index.html         # Web UI
-└── outputs/
-    └── {job_id}/          # Analysis results per job
-        ├── step_1_company.json
-        ├── step_2_skills_gap.json
-        ├── step_3_courses.json
-        └── step_4_report.html
+Multi-Agent-With-Crewai/
+│
+├── 📄 main.py                      # FastAPI application & API endpoints
+├── 📄 crew_logic.py                # CrewAI agents and task definitions
+├── 📄 requirements.txt             # Python dependencies
+├── 📄 run.bat                      # Windows startup script
+├── 📄 .env.example                 # Environment variables template
+├── 📄 .gitignore                   # Git ignore rules
+├── 📄 README.md                    # This file
+│
+├── 📁 static/                      # Frontend assets
+│   └── index.html                  # Web UI interface
+│
+└── 📁 outputs/                     # Analysis results (auto-created)
+    └── {job_id}/                   # Per-job output directory
+        ├── step_1_company.json     # Company analysis results
+        ├── step_2_skills_gap.json  # Skills gap analysis
+        ├── step_3_courses.json     # Course recommendations
+        └── step_4_report.html      # Final HTML report
 ```
 
 ---
 
 ## 🤖 How It Works
 
-### Agent Pipeline
+### Agent Pipeline Architecture
 
-1. **Company Analyzer Agent**
-   - Searches for company information and job postings
-   - Extracts required skills from job descriptions
-   - Creates a summary of company's skill needs
-
-2. **Skills Gap Detector Agent**
-   - Analyzes extracted skills
-   - Prioritizes based on frequency and importance
-   - Generates search queries for relevant courses
-
-3. **Course Finder Agent**
-   - Searches Coursera and Udemy
-   - Scrapes course details and ratings
-   - Ranks courses by relevance and quality
-
-4. **Training Report Author Agent**
-   - Compiles all findings
-   - Generates professional HTML report
-   - Provides actionable training recommendations
-
-### Data Flow
+The system uses a sequential pipeline of specialized agents:
 
 ```
-Company Request
-    ↓
-Company Analyzer Agent → step_1_company.json
-    ↓
-Skills Gap Detector → step_2_skills_gap.json
-    ↓
-Course Finder Agent → step_3_courses.json
-    ↓
-Report Author Agent → step_4_report.html
+┌─────────────────────────────────────────────────────────────┐
+│                     INPUT: Company Info                     │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+        ┌────────────────────────────────┐
+        │  🏢 Company Analyzer Agent     │
+        │  ─────────────────────────────  │
+        │  • Search job postings         │
+        │  • Extract company info        │
+        │  • List required skills        │
+        │  OUTPUT: step_1_company.json   │
+        └────────────┬───────────────────┘
+                     │
+                     ▼
+        ┌────────────────────────────────┐
+        │  🔍 Skills Gap Detector        │
+        │  ─────────────────────────────  │
+        │  • Analyze skill frequency     │
+        │  • Prioritize by importance    │
+        │  • Generate search queries     │
+        │  OUTPUT: step_2_skills_gap.json│
+        └────────────┬───────────────────┘
+                     │
+                     ▼
+        ┌────────────────────────────────┐
+        │  📚 Course Finder Agent        │
+        │  ─────────────────────────────  │
+        │  • Search platforms            │
+        │  • Scrape course details       │
+        │  • Rank by relevance           │
+        │  OUTPUT: step_3_courses.json   │
+        └────────────┬───────────────────┘
+                     │
+                     ▼
+        ┌────────────────────────────────┐
+        │  📊 Report Author Agent        │
+        │  ─────────────────────────────  │
+        │  • Compile all findings        │
+        │  • Generate HTML report        │
+        │  • Format recommendations      │
+        │  OUTPUT: step_4_report.html    │
+        └────────────┬───────────────────┘
+                     │
+                     ▼
+        ┌────────────────────────────────┐
+        │    Final Training Report       │
+        │    Ready for stakeholders      │
+        └────────────────────────────────┘
 ```
 
----
+### Agent Descriptions
 
-## 🛠️ Technologies Used
-
-| Technology | Purpose |
-|-----------|---------|
-| **CrewAI** | Multi-agent orchestration framework |
-| **FastAPI** | High-performance web API |
-| **OpenAI GPT-4** | LLM for agent reasoning |
-| **Tavily** | Web search and information retrieval |
-| **ScrapeGraphAI** | AI-powered web scraping |
-| **Pydantic** | Data validation |
-| **Uvicorn** | ASGI web server |
-
----
-
-## 📊 Output Files
-
-The analysis generates four output files per job:
-
-1. **step_1_company.json** — Company analysis with job posts and skills
-2. **step_2_skills_gap.json** — Prioritized skill gaps with reasoning
-3. **step_3_courses.json** — Recommended courses with details
-4. **step_4_report.html** — Professional HTML report (ready to share)
+| Agent | Role | Responsibilities |
+|-------|------|------------------|
+| **Company Analyzer** | Research Specialist | Finds and analyzes job postings, extracts skill requirements |
+| **Skills Gap Detector** | Data Analyst | Identifies patterns, prioritizes critical skills |
+| **Course Finder** | Research Specialist | Discovers and evaluates training courses |
+| **Report Author** | Technical Writer | Compiles findings into professional documentation |
 
 ---
 
@@ -241,55 +426,131 @@ The analysis generates four output files per job:
 
 ### Adjust Analysis Parameters
 
-In `main.py`, modify the `AnalysisRequest` model defaults:
+Edit `main.py` to change default parameters:
 
 ```python
 class AnalysisRequest(BaseModel):
-    min_job_posts: int = 1        # Increase for more job posts
-    top_skills_no: int = 2        # More skills to analyze
-    top_courses_no: int = 2       # More courses per skill
-    top_platforms_no: int = 2     # More platforms to search
+    company_name: str
+    industry: str
+    min_job_posts: int = 1          # Increase for more job posts
+    top_skills_no: int = 2          # Number of skills to analyze
+    top_courses_no: int = 2         # Courses per skill
+    top_platforms_no: int = 2       # Platforms to search
 ```
 
 ### Customize Agent Behavior
 
-Edit `crew_logic.py` to:
-- Change agent roles and goals
-- Modify task descriptions
-- Adjust LLM parameters (temperature, model)
-- Add new tools or data sources
+Edit `crew_logic.py` to modify:
+
+```python
+# Change LLM model
+basic_llm = LLM(model="gpt-4", temperature=0.3)
+
+# Modify agent goals
+agent = Agent(
+    role="...",
+    goal="Your custom goal here",
+    backstory="...",
+)
+
+# Adjust task descriptions
+task = Task(
+    description="Custom task description",
+    expected_output="Your expected output format"
+)
+```
+
+### Environment Variables
+
+```env
+# Model Configuration
+OPENAI_API_KEY=...              # GPT-4 access
+OPENAI_MODEL=gpt-4              # Change LLM model
+
+# Search & Scraping
+TAVILY_API_KEY=...              # Web search
+SGAI_API_KEY=...                # Web scraping
+
+# Monitoring
+AGENTOPS_API_KEY=...            # Agent monitoring
+```
 
 ---
 
 ## 🐛 Troubleshooting
 
-### API Keys Not Found
-- Ensure `.env` file exists in project root
-- Verify all required API keys are set correctly
+### ❌ "API Key not found" Error
+
+**Solution:**
+- Verify `.env` file exists in project root
+- Check all required keys are present and valid
 - Restart the server after updating `.env`
 
-### Slow Analysis
-- Reduce `min_job_posts` and `top_courses_no` parameters
-- Analysis time depends on API response speeds
-- Check API rate limits for Tavily and OpenAI
+```bash
+# Verify .env exists
+ls -la .env
 
-### Course Scraping Errors
-- Verify `SGAI_API_KEY` is valid
-- Some websites may block scraping
-- Check `top_platforms_no` is not too high
+# Check key format
+cat .env
+```
+
+### ❌ "ModuleNotFoundError" Error
+
+**Solution:**
+```bash
+# Reinstall dependencies
+pip install --upgrade -r requirements.txt
+
+# Verify virtual environment is activated
+which python  # Linux/Mac
+where python  # Windows
+```
+
+### ❌ Slow Analysis / Timeouts
+
+**Solution:**
+- Reduce `min_job_posts` parameter (fewer job posts = faster analysis)
+- Reduce `top_courses_no` parameter
+- Check API rate limits on OpenAI and Tavily dashboards
+- Consider waiting time: analysis can take 2-5 minutes depending on settings
+
+### ❌ Course Scraping Fails
+
+**Solution:**
+- Verify `SGAI_API_KEY` is active
+- Some websites block scrapers (try different platforms)
+- Check Tavily API quota
+- Reduce `top_platforms_no` to 1
+
+### ❌ Port 8000 Already in Use
+
+**Solution:**
+```bash
+# Use different port
+uvicorn main:app --port 8001
+
+# Kill process on port 8000 (Windows)
+netstat -ano | findstr :8000
+taskkill /PID <PID> /F
+
+# Or Linux/Mac
+lsof -i :8000
+kill -9 <PID>
+```
 
 ---
 
-## 📝 Example Usage
+## 📝 Examples
 
-### Via cURL
+### Example 1: Analyze Tech Startup
 
+**Request:**
 ```bash
 curl -X POST http://localhost:8000/api/analyze \
   -H "Content-Type: application/json" \
   -d '{
-    "company_name": "Google",
-    "industry": "Technology",
+    "company_name": "OpenAI",
+    "industry": "Artificial Intelligence",
     "min_job_posts": 3,
     "top_skills_no": 5,
     "top_courses_no": 3,
@@ -297,51 +558,113 @@ curl -X POST http://localhost:8000/api/analyze \
   }'
 ```
 
-### Via Python
+**Expected Output:**
+- Company profile and mission
+- Top 5 skills (Python, Machine Learning, etc.)
+- 3-5 recommended courses per skill
+- Professional HTML report
+
+### Example 2: Python Script
 
 ```python
 import requests
+import json
+from time import sleep
 
-response = requests.post(
-    "http://localhost:8000/api/analyze",
-    json={
-        "company_name": "Microsoft",
-        "industry": "Software Development",
-        "min_job_posts": 2,
-        "top_skills_no": 3,
-        "top_courses_no": 2,
-        "top_platforms_no": 2
-    }
-)
+BASE_URL = "http://localhost:8000"
 
-job_id = response.json()["job_id"]
-print(f"Analysis started: {job_id}")
+# Submit analysis request
+response = requests.post(f"{BASE_URL}/api/analyze", json={
+    "company_name": "Netflix",
+    "industry": "Streaming & Media",
+    "min_job_posts": 2,
+    "top_skills_no": 3,
+    "top_courses_no": 2,
+    "top_platforms_no": 2
+})
+
+job_data = response.json()
+job_id = job_data["job_id"]
+print(f"✅ Analysis started: {job_id}")
+
+# Poll for results
+while True:
+    status_response = requests.get(f"{BASE_URL}/api/analyze/{job_id}")
+    status = status_response.json()
+    
+    print(f"Status: {status['status']} | Progress: {status['progress']}%")
+    
+    if status['status'] == 'completed':
+        results = status['results']
+        print("\n📊 Analysis Complete!")
+        print(json.dumps(results, indent=2))
+        break
+    elif status['status'] == 'failed':
+        print("❌ Analysis failed")
+        break
+    
+    sleep(5)  # Check every 5 seconds
 ```
-
----
-
-## 📜 License
-
-This project is open-source and available for personal and commercial use.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Feel free to:
-- Report bugs
-- Suggest improvements
-- Submit pull requests
-- Improve documentation
+Contributions are welcome! Please feel free to:
+
+- 🐛 **Report Bugs** — Open an issue with details
+- 💡 **Suggest Features** — Share your ideas
+- 🔧 **Submit Pull Requests** — Improve the code
+- 📚 **Improve Docs** — Help others understand
+
+### Steps to Contribute
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
-## 📧 Support
+## 📜 License
 
-For issues, questions, or feedback, please open an issue in the project repository or contact the development team.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+You're free to use this project for:
+- ✅ Personal projects
+- ✅ Commercial applications
+- ✅ Educational purposes
+- ✅ Modifications and distributions
 
 ---
 
-**Built with Jana Ashraf**
-#   M u l t i - A g e n t - W i t h - C r e w a i  
+## 🙏 Acknowledgments
+
+- **CrewAI** — For the amazing multi-agent framework
+- **FastAPI** — For the high-performance web framework
+- **OpenAI** — For GPT-4 API
+- **Tavily** — For web search capabilities
+- **ScrapeGraphAI** — For intelligent web scraping
+
+---
+
+## 📧 Contact & Support
+
+- 👤 **Author**: Jana Ashraf
+- 📧 **Email**: [contact info]
+- 🐙 **GitHub**: [@Janaelpardisi](https://github.com/Janaelpardisi)
+- 💬 **Issues**: [GitHub Issues](https://github.com/Janaelpardisi/Multi-Agent-With-Crewai/issues)
+
+---
+
+<div align="center">
+
+### ⭐ If you found this useful, please consider giving it a star!
+
+**Built with ❤️ by Jana Ashraf**
+
+</div>
+#   M u l t i - A g e n t - W i t h - C r e w a i 
+ 
  
