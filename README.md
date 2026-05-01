@@ -10,7 +10,6 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![CrewAI](https://img.shields.io/badge/CrewAI-1.14%2B-FF6B35?logoColor=white)](https://docs.crewai.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/Janaelpardisi/Multi-Agent-With-Crewai?style=social)](https://github.com/Janaelpardisi/Multi-Agent-With-Crewai)
 
 [Features](#-features) • [Quick Start](#-quick-start) • [API Docs](#-api-documentation) • [How It Works](#-how-it-works) • [Contributing](#-contributing)
 
@@ -665,4 +664,4 @@ You're free to use this project for:
 **Built with ❤️ by Jana Ashraf**
 
 </div>
-#
+
