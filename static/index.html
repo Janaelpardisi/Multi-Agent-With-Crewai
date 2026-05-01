@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Corporate Training Agent — AI-Powered Skill Gap Analyzer</title>
+<meta name="description" content="Analyze your company's skill gaps and get personalized training recommendations powered by AI agents." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ── Reset & Variables ──────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #07090f;
+  --bg2:         #0d1117;
+  --bg3:         #161b27;
+  --border:      rgba(255,255,255,0.08);
+  --text:        #e2e8f0;
+  --text2:       #94a3b8;
+  --text3:       #64748b;
+  --primary:     #6366f1;
+  --primary2:    #818cf8;
+  --purple:      #a855f7;
+  --cyan:        #06b6d4;
+  --green:       #10b981;
+  --red:         #ef4444;
+  --amber:       #f59e0b;
+  --glow:        rgba(99,102,241,0.35);
+  --card-bg:     rgba(255,255,255,0.03);
+  --card-border: rgba(255,255,255,0.07);
+  --radius:      16px;
+  --radius-sm:   10px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Animated Background ────────────────────────────────── */
+.bg-canvas {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(99,102,241,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(168,85,247,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(6,182,212,0.05) 0%, transparent 70%);
+  animation: bgShift 12s ease-in-out infinite alternate;
+}
+@keyframes bgShift {
+  0%   { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* ── Grid overlay ───────────────────────────────────────── */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.app { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ── Navbar ─────────────────────────────────────────────── */
+nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 36px;
+  background: rgba(7,9,15,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 1.1rem; font-weight: 700; color: var(--text);
+  text-decoration: none;
+}
+.nav-logo {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--primary), var(--purple));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 0 20px var(--glow);
+}
+.nav-badge {
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em;
+  background: linear-gradient(90deg, var(--primary), var(--purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  border: 1px solid rgba(99,102,241,0.3);
+  padding: 2px 8px; border-radius: 20px;
+}
+.nav-links { display: flex; align-items: center; gap: 24px; }
+.nav-link {
+  color: var(--text2); font-size: 0.85rem; font-weight: 500;
+  text-decoration: none; transition: color 0.2s;
+}
+.nav-link:hover { color: var(--text); }
+
+/* ── Pages ──────────────────────────────────────────────── */
+.page { display: none; flex: 1; }
+.page.active { display: flex; flex-direction: column; }
+
+/* ── Hero / Form Page ───────────────────────────────────── */
+.hero {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 24px;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.25);
+  border-radius: 30px; padding: 6px 16px; font-size: 0.78rem; font-weight: 600;
+  color: var(--primary2); margin-bottom: 28px;
+  animation: fadeUp 0.6s ease both;
+}
+.pulse-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+@keyframes pulseDot { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.6rem); font-weight: 800;
+  text-align: center; line-height: 1.15; margin-bottom: 20px;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+.hero-title span {
+  background: linear-gradient(120deg, var(--primary2), var(--purple), var(--cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size: 1.05rem; color: var(--text2); text-align: center;
+  max-width: 540px; line-height: 1.7; margin-bottom: 52px;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+
+/* ── Form Card ──────────────────────────────────────────── */
+.form-card {
+  width: 100%; max-width: 660px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 40px;
+  backdrop-filter: blur(12px);
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+.form-section-title {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text3); margin-bottom: 16px;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+.form-group.full { grid-column: 1 / -1; }
+
+label {
+  font-size: 0.82rem; font-weight: 600; color: var(--text2);
+}
+.input-wrap { position: relative; }
+.input-icon {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--text3); font-size: 1rem; pointer-events: none;
+}
+input[type="text"], input[type="number"] {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px 12px 40px;
+  color: var(--text); font-size: 0.9rem; font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+input[type="text"]:focus, input[type="number"]:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+input::placeholder { color: var(--text3); }
+
+.divider {
+  height: 1px; background: var(--border);
+  margin: 28px 0;
+}
+
+/* ── Parameter Sliders ──────────────────────────────────── */
+.params-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.param-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+.param-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.param-label { font-size: 0.78rem; font-weight: 600; color: var(--text2); }
+.param-value {
+  font-size: 1.3rem; font-weight: 700;
+  background: linear-gradient(90deg, var(--primary2), var(--purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+input[type="range"] {
+  width: 100%; height: 4px; border-radius: 4px;
+  background: var(--bg3); outline: none; border: none; padding: 0;
+  cursor: pointer; accent-color: var(--primary);
+}
+
+/* ── Submit Button ──────────────────────────────────────── */
+.btn-primary {
+  width: 100%; margin-top: 28px;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--primary), var(--purple));
+  border: none; border-radius: var(--radius-sm);
+  color: white; font-size: 1rem; font-weight: 700;
+  cursor: pointer; transition: all 0.25s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  box-shadow: 0 4px 24px rgba(99,102,241,0.35);
+  position: relative; overflow: hidden;
+}
+.btn-primary::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+  opacity: 0; transition: opacity 0.2s;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 30px rgba(99,102,241,0.5); }
+.btn-primary:hover::before { opacity: 1; }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ── Progress Page ──────────────────────────────────────── */
+.progress-page {
+  flex: 1; padding: 48px 36px;
+  max-width: 1100px; margin: 0 auto; width: 100%;
+}
+.progress-header { margin-bottom: 40px; }
+.progress-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; }
+.progress-sub { color: var(--text2); font-size: 0.92rem; }
+
+/* ── Overall Progress Bar ───────────────────────────────── */
+.overall-progress-wrap { margin-bottom: 40px; }
+.overall-progress-info {
+  display: flex; justify-content: space-between;
+  font-size: 0.82rem; color: var(--text2); margin-bottom: 10px;
+}
+.progress-bar-track {
+  height: 6px; background: var(--bg3); border-radius: 6px; overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--purple), var(--cyan));
+  border-radius: 6px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+  width: 0%;
+}
+
+/* ── Agent Cards ────────────────────────────────────────── */
+.agents-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px; margin-bottom: 40px;
+}
+.agent-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: all 0.4s ease;
+  position: relative; overflow: hidden;
+}
+.agent-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--purple));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.6s ease;
+}
+.agent-card.running::before { transform: scaleX(1); }
+.agent-card.done { border-color: rgba(16,185,129,0.3); }
+.agent-card.done::before { background: var(--green); transform: scaleX(1); }
+
+.agent-icon {
+  width: 46px; height: 46px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; margin-bottom: 14px;
+  background: rgba(99,102,241,0.12);
+  border: 1px solid rgba(99,102,241,0.2);
+}
+.agent-card.running .agent-icon { animation: glowPulse 2s ease-in-out infinite; }
+.agent-card.done .agent-icon { background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.25); }
+@keyframes glowPulse {
+  0%,100% { box-shadow: 0 0 0 rgba(99,102,241,0); }
+  50%      { box-shadow: 0 0 16px rgba(99,102,241,0.5); }
+}
+
+.agent-name { font-size: 0.88rem; font-weight: 700; margin-bottom: 6px; }
+.agent-step { font-size: 0.73rem; color: var(--text3); line-height: 1.5; min-height: 36px; }
+
+.agent-status {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 14px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+}
+.status-waiting { background: rgba(100,116,139,0.15); color: var(--text3); }
+.status-running { background: rgba(99,102,241,0.15); color: var(--primary2); }
+.status-done    { background: rgba(16,185,129,0.15); color: var(--green); }
+
+/* Spinner */
+.spinner {
+  width: 10px; height: 10px; border: 2px solid transparent;
+  border-top-color: var(--primary2); border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Live Log ────────────────────────────────────────────── */
+.log-panel {
+  background: #0a0d14;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  padding: 20px;
+  height: 260px; overflow-y: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; line-height: 1.7;
+}
+.log-panel::-webkit-scrollbar { width: 4px; }
+.log-panel::-webkit-scrollbar-track { background: transparent; }
+.log-panel::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 4px; }
+
+.log-line { display: flex; gap: 10px; margin-bottom: 4px; }
+.log-time { color: var(--text3); min-width: 60px; }
+.log-badge {
+  font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; font-weight: 600;
+  min-width: 50px; text-align: center;
+}
+.log-badge.info  { background: rgba(99,102,241,0.2); color: var(--primary2); }
+.log-badge.step  { background: rgba(168,85,247,0.2); color: #c084fc; }
+.log-badge.done  { background: rgba(16,185,129,0.2); color: var(--green); }
+.log-badge.error { background: rgba(239,68,68,0.2);  color: var(--red); }
+.log-text { color: var(--text2); flex: 1; word-break: break-word; }
+
+/* ── Results Page ───────────────────────────────────────── */
+.results-page {
+  flex: 1; padding: 48px 36px;
+  max-width: 1100px; margin: 0 auto; width: 100%;
+}
+.results-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 40px; flex-wrap: wrap; gap: 16px;
+}
+.results-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; }
+.results-sub { color: var(--text2); font-size: 0.92rem; }
+
+/* ── Stat Cards ─────────────────────────────────────────── */
+.stats-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px; margin-bottom: 40px;
+}
+.stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm); padding: 20px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.stat-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); }
+.stat-value { font-size: 2rem; font-weight: 800; }
+.stat-value.indigo { color: var(--primary2); }
+.stat-value.purple { color: #c084fc; }
+.stat-value.cyan   { color: var(--cyan); }
+.stat-value.green  { color: var(--green); }
+
+/* ── Section titles ─────────────────────────────────────── */
+.section-title {
+  font-size: 1.1rem; font-weight: 700; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* ── Skills Cards ───────────────────────────────────────── */
+.skills-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px; margin-bottom: 44px;
+}
+.skill-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius); padding: 22px;
+  transition: border-color 0.2s;
+}
+.skill-card:hover { border-color: rgba(99,102,241,0.3); }
+.skill-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.skill-name { font-size: 0.95rem; font-weight: 700; }
+.importance-badge {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
+}
+.imp-high   { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+.imp-medium { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.2); }
+.imp-low    { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+.skill-reason { font-size: 0.8rem; color: var(--text2); line-height: 1.6; }
+
+/* ── Courses Table ──────────────────────────────────────── */
+.table-wrap {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius); overflow: hidden; margin-bottom: 44px;
+}
+table { width: 100%; border-collapse: collapse; }
+thead { background: rgba(255,255,255,0.04); }
+th {
+  padding: 14px 18px; text-align: left;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text3);
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 14px 18px; font-size: 0.85rem; color: var(--text2);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+.td-skill { font-weight: 600; color: var(--text); }
+.td-course { font-weight: 600; color: var(--primary2); }
+.platform-badge {
+  display: inline-block; font-size: 0.7rem; font-weight: 600;
+  padding: 3px 10px; border-radius: 20px;
+  background: rgba(99,102,241,0.12); color: var(--primary2);
+  border: 1px solid rgba(99,102,241,0.2);
+}
+.rating { color: var(--amber); font-weight: 600; }
+.price-free { color: var(--green); font-weight: 600; }
+.rank-circle {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--purple));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 700; color: white;
+}
+
+/* ── Buttons ────────────────────────────────────────────── */
+.btn-outline {
+  padding: 10px 22px;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  color: var(--primary2); background: transparent;
+  font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+}
+.btn-outline:hover {
+  background: rgba(99,102,241,0.12);
+  box-shadow: 0 0 20px rgba(99,102,241,0.2);
+}
+.btn-success {
+  padding: 10px 22px;
+  background: rgba(16,185,129,0.12);
+  border: 1px solid rgba(16,185,129,0.3);
+  border-radius: var(--radius-sm);
+  color: var(--green); font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+}
+.btn-success:hover { background: rgba(16,185,129,0.2); }
+
+.action-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* ── Animations ─────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.5s ease both; }
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+  nav { padding: 14px 20px; }
+  .form-card { padding: 24px; }
+  .form-row, .params-grid { grid-template-columns: 1fr; }
+  .progress-page, .results-page { padding: 32px 20px; }
+  .agents-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── Toast ──────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 28px; right: 28px;
+  padding: 14px 20px; border-radius: var(--radius-sm);
+  font-size: 0.85rem; font-weight: 600; z-index: 999;
+  animation: fadeUp 0.3s ease;
+  display: flex; align-items: center; gap: 10px;
+  max-width: 340px;
+}
+.toast-error { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #f87171; }
+.toast-success { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: var(--green); }
+
+/* ── Empty state ────────────────────────────────────────── */
+.empty { text-align: center; padding: 60px 20px; color: var(--text3); }
+.empty-icon { font-size: 3rem; margin-bottom: 14px; }
+.empty-text { font-size: 0.92rem; }
+</style>
+</head>
+<body>
+<div class="bg-canvas"></div>
+<div class="bg-grid"></div>
+
+<div class="app">
+
+  <!-- ── Navbar ── -->
+  <nav>
+    <a href="#" class="nav-brand" onclick="showPage('home')">
+      <div class="nav-logo">🎓</div>
+      Training Agent
+    </a>
+    <div class="nav-links">
+      <span class="nav-badge">AI POWERED</span>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════
+       PAGE 1: Home / Input Form
+  ═══════════════════════════════════════════════════════ -->
+  <div class="page active" id="page-home">
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        Powered by CrewAI Multi-Agent System
+      </div>
+      <h1 class="hero-title">
+        Identify Skill Gaps &<br /><span>Build Smarter Teams</span>
+      </h1>
+      <p class="hero-sub">
+        Our AI agents analyze your company's job postings, detect critical skill gaps,
+        and recommend the best training courses — all automatically.
+      </p>
+
+      <div class="form-card">
+        <p class="form-section-title">Company Information</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="company-name">Company Name</label>
+            <div class="input-wrap">
+              <span class="input-icon">🏢</span>
+              <input type="text" id="company-name" placeholder="e.g. Vodafone Egypt" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="industry">Industry</label>
+            <div class="input-wrap">
+              <span class="input-icon">🏭</span>
+              <input type="text" id="industry" placeholder="e.g. Telecommunications" />
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <p class="form-section-title">Analysis Parameters</p>
+
+        <div class="params-grid">
+          <div class="param-card">
+            <div class="param-header">
+              <span class="param-label">📋 Job Posts to Analyze</span>
+              <span class="param-value" id="val-jobs">1</span>
+            </div>
+            <input type="range" id="min-job-posts" min="1" max="5" value="1"
+              oninput="document.getElementById('val-jobs').textContent=this.value" />
+          </div>
+          <div class="param-card">
+            <div class="param-header">
+              <span class="param-label">🔍 Top Skills to Detect</span>
+              <span class="param-value" id="val-skills">2</span>
+            </div>
+            <input type="range" id="top-skills" min="1" max="6" value="2"
+              oninput="document.getElementById('val-skills').textContent=this.value" />
+          </div>
+          <div class="param-card">
+            <div class="param-header">
+              <span class="param-label">📚 Courses per Skill</span>
+              <span class="param-value" id="val-courses">2</span>
+            </div>
+            <input type="range" id="top-courses" min="1" max="5" value="2"
+              oninput="document.getElementById('val-courses').textContent=this.value" />
+          </div>
+          <div class="param-card">
+            <div class="param-header">
+              <span class="param-label">🌐 Platforms to Search</span>
+              <span class="param-value" id="val-platforms">2</span>
+            </div>
+            <input type="range" id="top-platforms" min="1" max="4" value="2"
+              oninput="document.getElementById('val-platforms').textContent=this.value" />
+          </div>
+        </div>
+
+        <button class="btn-primary" id="start-btn" onclick="startAnalysis()">
+          <span>🚀</span> Launch Analysis
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       PAGE 2: Progress Tracker
+  ═══════════════════════════════════════════════════════ -->
+  <div class="page" id="page-progress">
+    <div class="progress-page">
+      <div class="progress-header">
+        <div>
+          <h2 class="progress-title">🤖 Agents at Work</h2>
+          <p class="progress-sub" id="progress-company">Analyzing <strong>—</strong></p>
+        </div>
+        <div id="elapsed-time" style="color:var(--text3); font-size:0.85rem; font-family:'JetBrains Mono',monospace;">
+          00:00
+        </div>
+      </div>
+
+      <!-- Overall progress bar -->
+      <div class="overall-progress-wrap">
+        <div class="overall-progress-info">
+          <span id="progress-label">Starting up…</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progress-bar"></div>
+        </div>
+      </div>
+
+      <!-- Agents grid -->
+      <div class="agents-grid">
+        <div class="agent-card" id="card-0">
+          <div class="agent-icon">🏢</div>
+          <div class="agent-name">Company Analyzer</div>
+          <div class="agent-step" id="step-0">Waiting to start…</div>
+          <span class="agent-status status-waiting" id="status-0">⏳ Waiting</span>
+        </div>
+        <div class="agent-card" id="card-1">
+          <div class="agent-icon">🔍</div>
+          <div class="agent-name">Skills Gap Detector</div>
+          <div class="agent-step" id="step-1">Waiting for job data…</div>
+          <span class="agent-status status-waiting" id="status-1">⏳ Waiting</span>
+        </div>
+        <div class="agent-card" id="card-2">
+          <div class="agent-icon">📚</div>
+          <div class="agent-name">Course Finder</div>
+          <div class="agent-step" id="step-2">Waiting for skill gaps…</div>
+          <span class="agent-status status-waiting" id="status-2">⏳ Waiting</span>
+        </div>
+        <div class="agent-card" id="card-3">
+          <div class="agent-icon">📊</div>
+          <div class="agent-name">Report Author</div>
+          <div class="agent-step" id="step-3">Waiting for all data…</div>
+          <span class="agent-status status-waiting" id="status-3">⏳ Waiting</span>
+        </div>
+      </div>
+
+      <!-- Live log -->
+      <p class="section-title">Live Log</p>
+      <div class="log-panel" id="log-panel">
+        <div class="log-line">
+          <span class="log-time">00:00</span>
+          <span class="log-badge info">INFO</span>
+          <span class="log-text">Initializing analysis pipeline…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       PAGE 3: Results Dashboard
+  ═══════════════════════════════════════════════════════ -->
+  <div class="page" id="page-results">
+    <div class="results-page">
+      <div class="results-header">
+        <div>
+          <h2 class="results-title">📊 Analysis Complete</h2>
+          <p class="results-sub" id="results-company-info">Results for —</p>
+        </div>
+        <div class="action-row">
+          <button class="btn-outline" onclick="showPage('home')">🔄 New Analysis</button>
+          <a class="btn-success" id="report-link" href="#" target="_blank">📄 View Full Report</a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row" id="stats-row"></div>
+
+      <!-- Skills Gap -->
+      <p class="section-title">🔍 Identified Skill Gaps</p>
+      <div class="skills-grid" id="skills-grid">
+        <div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">No skill data yet</div></div>
+      </div>
+
+      <!-- Courses Table -->
+      <p class="section-title">📚 Recommended Courses</p>
+      <div class="table-wrap" id="courses-table-wrap">
+        <div class="empty"><div class="empty-icon">📚</div><div class="empty-text">No course data yet</div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- .app -->
+
+<script>
+// ── State ─────────────────────────────────────────────────
+let currentJobId = null;
+let eventSource  = null;
+let timerInterval = null;
+let startTime = 0;
+let completedAgents = [];
+
+const AGENT_NAMES = [
+  "Company Analyzer Agent",
+  "Skills Gap Detector Agent",
+  "Course Finder Agent",
+  "Training Report Author Agent",
+];
+
+// ── Page switching ─────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── Timer ─────────────────────────────────────────────────
+function startTimer() {
+  startTime = Date.now();
+  timerInterval = setInterval(() => {
+    const s = Math.floor((Date.now() - startTime) / 1000);
+    const mm = String(Math.floor(s / 60)).padStart(2,'0');
+    const ss = String(s % 60).padStart(2,'0');
+    document.getElementById('elapsed-time').textContent = mm + ':' + ss;
+  }, 1000);
+}
+function stopTimer() { clearInterval(timerInterval); }
+
+// ── Start Analysis ─────────────────────────────────────────
+async function startAnalysis() {
+  const company = document.getElementById('company-name').value.trim();
+  const industry = document.getElementById('industry').value.trim();
+  if (!company || !industry) {
+    showToast('⚠️ Please enter Company Name and Industry.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('start-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Launching…';
+
+  const payload = {
+    company_name:     company,
+    industry:         industry,
+    min_job_posts:    parseInt(document.getElementById('min-job-posts').value),
+    top_skills_no:    parseInt(document.getElementById('top-skills').value),
+    top_courses_no:   parseInt(document.getElementById('top-courses').value),
+    top_platforms_no: parseInt(document.getElementById('top-platforms').value),
+  };
+
+  try {
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Server error');
+
+    currentJobId = data.job_id;
+    completedAgents = [];
+    resetProgressUI(company, industry);
+    showPage('progress');
+    startTimer();
+    startSSE(currentJobId);
+  } catch (err) {
+    showToast('❌ ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span>🚀</span> Launch Analysis';
+  }
+}
+
+// ── Reset Progress UI ──────────────────────────────────────
+function resetProgressUI(company, industry) {
+  document.getElementById('progress-company').innerHTML =
+    'Analyzing <strong>' + company + '</strong> · ' + industry;
+  document.getElementById('progress-label').textContent = 'Initializing agents…';
+  document.getElementById('progress-pct').textContent = '0%';
+  document.getElementById('progress-bar').style.width = '0%';
+  document.getElementById('log-panel').innerHTML = '';
+  document.getElementById('elapsed-time').textContent = '00:00';
+
+  for (let i = 0; i < 4; i++) {
+    setAgentStatus(i, 'waiting');
+    document.getElementById('step-' + i).textContent =
+      ['Waiting to start…','Waiting for job data…','Waiting for skill gaps…','Waiting for all data…'][i];
+  }
+}
+
+// ── SSE Stream ─────────────────────────────────────────────
+function startSSE(jobId) {
+  if (eventSource) eventSource.close();
+  eventSource = new EventSource('/api/stream/' + jobId);
+
+  eventSource.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+      handleMessage(msg);
+    } catch (_) {}
+  };
+
+  eventSource.onerror = () => {
+    addLog('error', 'Connection interrupted. Retrying…', null);
+  };
+}
+
+// ── Message Handler ────────────────────────────────────────
+function handleMessage(msg) {
+  const type = msg.type;
+
+  if (type === 'status') {
+    updateProgress(msg.completed_agents || [], msg.current_agent);
+    return;
+  }
+
+  if (type === 'step' || type === 'info') {
+    addLog(type === 'info' ? 'info' : 'step', msg.content, msg.agent);
+    if (msg.agent) {
+      const idx = AGENT_NAMES.indexOf(msg.agent);
+      if (idx >= 0) {
+        setAgentStatus(idx, 'running');
+        document.getElementById('step-' + idx).textContent =
+          (msg.content || '').substring(0, 80) + (msg.content && msg.content.length > 80 ? '…' : '');
+      }
+    }
+    return;
+  }
+
+  if (type === 'task_done') {
+    addLog('done', msg.content, msg.agent);
+    const idx = AGENT_NAMES.indexOf(msg.agent);
+    if (idx >= 0) setAgentStatus(idx, 'done');
+    return;
+  }
+
+  if (type === 'error') {
+    addLog('error', msg.content, null);
+    return;
+  }
+
+  if (type === 'final') {
+    stopTimer();
+    eventSource.close();
+    if (msg.status === 'completed' && msg.result) {
+      showResults(msg.result);
+    } else {
+      showToast('❌ Analysis failed: ' + (msg.error || 'Unknown error'), 'error');
+      showPage('home');
+    }
+  }
+}
+
+// ── Update Progress Bar ────────────────────────────────────
+function updateProgress(doneAgents, currentAgent) {
+  const pct = Math.round((doneAgents.length / 4) * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent  = pct + '%';
+
+  const labels = [
+    'Searching job postings…',
+    'Analyzing skill gaps…',
+    'Finding courses…',
+    'Writing report…',
+    'Analysis complete!'
+  ];
+  document.getElementById('progress-label').textContent = labels[Math.min(doneAgents.length, 4)];
+
+  doneAgents.forEach(agentName => {
+    const idx = AGENT_NAMES.indexOf(agentName);
+    if (idx >= 0) setAgentStatus(idx, 'done');
+  });
+
+  if (currentAgent) {
+    const idx = AGENT_NAMES.indexOf(currentAgent);
+    if (idx >= 0 && !doneAgents.includes(currentAgent)) {
+      setAgentStatus(idx, 'running');
+      // Next agents waiting
+      for (let i = idx + 1; i < 4; i++) {
+        if (!doneAgents.some(a => AGENT_NAMES.indexOf(a) === i)) {
+          setAgentStatus(i, 'waiting');
+        }
+      }
+    }
+  }
+}
+
+// ── Agent Card Status ──────────────────────────────────────
+function setAgentStatus(idx, state) {
+  const card   = document.getElementById('card-' + idx);
+  const badge  = document.getElementById('status-' + idx);
+  card.classList.remove('running', 'done');
+
+  if (state === 'running') {
+    card.classList.add('running');
+    badge.className = 'agent-status status-running';
+    badge.innerHTML = '<div class="spinner"></div> Running';
+  } else if (state === 'done') {
+    card.classList.add('done');
+    badge.className = 'agent-status status-done';
+    badge.textContent = '✅ Done';
+  } else {
+    badge.className = 'agent-status status-waiting';
+    badge.textContent = '⏳ Waiting';
+  }
+}
+
+// ── Log Panel ─────────────────────────────────────────────
+function addLog(type, content, agent) {
+  const panel = document.getElementById('log-panel');
+  const s = Math.floor((Date.now() - startTime) / 1000);
+  const mm = String(Math.floor(s / 60)).padStart(2,'0');
+  const ss = String(s % 60).padStart(2,'0');
+
+  const line = document.createElement('div');
+  line.className = 'log-line';
+  const text = (content || '').replace(/</g,'&lt;').substring(0, 200);
+  line.innerHTML =
+    `<span class="log-time">${mm}:${ss}</span>` +
+    `<span class="log-badge ${type}">${type.toUpperCase()}</span>` +
+    `<span class="log-text">${text}</span>`;
+  panel.appendChild(line);
+  panel.scrollTop = panel.scrollHeight;
+}
+
+// ── Show Results ───────────────────────────────────────────
+function showResults(result) {
+  const skills  = result.skills  || [];
+  const courses = result.courses || [];
+
+  document.getElementById('results-company-info').textContent =
+    'Results for ' + (result.company_name || '—') + ' · ' + (result.industry || '');
+
+  // Report link
+  document.getElementById('report-link').href = '/api/report/' + currentJobId;
+
+  // Stats
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Skills Identified</div><div class="stat-value indigo">${skills.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Courses Found</div><div class="stat-value purple">${courses.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Platforms Used</div><div class="stat-value cyan">${[...new Set(courses.map(c => c.platform))].length}</div></div>
+    <div class="stat-card"><div class="stat-label">Analysis Status</div><div class="stat-value green">Done</div></div>
+  `;
+
+  // Skills grid
+  if (skills.length) {
+    document.getElementById('skills-grid').innerHTML = skills.map(s => `
+      <div class="skill-card fade-up">
+        <div class="skill-header">
+          <div class="skill-name">${esc(s.skill_name)}</div>
+          <div class="importance-badge imp-${(s.importance_level||'medium').toLowerCase()}">
+            ${esc(s.importance_level)}
+          </div>
+        </div>
+        <div class="skill-reason">${esc(s.reason)}</div>
+      </div>
+    `).join('');
+  } else {
+    document.getElementById('skills-grid').innerHTML =
+      '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">No skills data found</div></div>';
+  }
+
+  // Courses table
+  if (courses.length) {
+    document.getElementById('courses-table-wrap').innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Skill</th><th>Course</th><th>Platform</th>
+            <th>Rating</th><th>Price</th><th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${courses.map((c, i) => `
+            <tr>
+              <td><div class="rank-circle">${c.agent_recommendation_rank || i+1}</div></td>
+              <td class="td-skill">${esc(c.skill_name)}</td>
+              <td class="td-course">
+                ${c.course_url
+                  ? `<a href="${esc(c.course_url)}" target="_blank" style="color:var(--primary2);text-decoration:none;">${esc(c.course_title)}</a>`
+                  : esc(c.course_title)}
+              </td>
+              <td><span class="platform-badge">${esc(c.platform)}</span></td>
+              <td class="rating">${c.rating ? '⭐ ' + c.rating : '—'}</td>
+              <td class="${(c.price||'').toLowerCase().includes('free') ? 'price-free' : ''}">${esc(c.price||'—')}</td>
+              <td>${esc(c.duration||'—')}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  } else {
+    document.getElementById('courses-table-wrap').innerHTML =
+      '<div class="empty"><div class="empty-icon">📚</div><div class="empty-text">No courses data found</div></div>';
+  }
+
+  showPage('results');
+  showToast('✅ Analysis completed successfully!', 'success');
+}
+
+// ── Helpers ───────────────────────────────────────────────
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function showToast(msg, type) {
+  const t = document.createElement('div');
+  t.className = 'toast toast-' + type;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 4000);
+}
+</script>
+</body>
+</html>

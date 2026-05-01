@@ -1,0 +1,8 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+crewai[tools]==1.14.2
+agentops
+tavily-python
+scrapegraphai
+python-multipart
+python-dotenv
